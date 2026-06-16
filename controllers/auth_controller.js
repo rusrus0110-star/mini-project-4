@@ -12,28 +12,33 @@ export const register_user = async (req, res, next) => {
       });
     }
 
-    if (typeof name !== "string") {
+    if (
+      typeof name !== "string" ||
+      typeof email !== "string" ||
+      typeof password !== "string"
+    ) {
       return res.status(400).json({
         success: false,
-        message: "Name must be a string",
+        message: "Name, email and password must be strings",
       });
     }
 
-    if (typeof email !== "string") {
-      return res.status(400).json({
-        success: false,
-        message: "Email must be a string",
-      });
-    }
-
-    if (typeof password !== "string") {
-      return res.status(400).json({
-        success: false,
-        message: "Password must be a string",
-      });
-    }
-
+    const normalized_name = name.trim();
     const normalized_email = email.trim().toLowerCase();
+
+    if (!normalized_name) {
+      return res.status(400).json({
+        success: false,
+        message: "Name cannot be empty",
+      });
+    }
+
+    if (!normalized_email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email cannot be empty",
+      });
+    }
 
     const existing_user = await User.findOne({
       email: normalized_email,
@@ -47,7 +52,7 @@ export const register_user = async (req, res, next) => {
     }
 
     const user = await User.create({
-      name: name.trim(),
+      name: normalized_name,
       email: normalized_email,
       password,
     });
@@ -133,4 +138,18 @@ export const login_user = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const get_current_user = async (req, res) => {
+  return res.status(200).json({
+    success: true,
+    data: {
+      user: {
+        id: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+        created_at: req.user.createdAt,
+      },
+    },
+  });
 };
