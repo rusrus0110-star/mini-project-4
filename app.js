@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import { connect_database } from "./config/database.js";
 import auth_router from "./routes/auth_routes.js";
 import task_router from "./routes/task_routes.js";
+import { not_found_middleware } from "./middleware/not_found_middleware.js";
+import { error_middleware } from "./middleware/error_middleware.js";
 
 dotenv.config();
 
@@ -22,6 +24,9 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", auth_router);
 app.use("/api/tasks", task_router);
+
+app.use(not_found_middleware);
+app.use(error_middleware);
 
 const start_server = async () => {
   try {
