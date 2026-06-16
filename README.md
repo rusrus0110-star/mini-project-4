@@ -22,27 +22,6 @@ A REST API for user authentication and task management built with Node.js, Expre
 - JSON Web Token
 - bcrypt
 
-## Installation
-
-```bash
-npm install
-```
-
-Create a `.env` file:
-
-```env
-PORT=5000
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-JWT_EXPIRES_IN=7d
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
 ## API Endpoints
 
 ### Authentication
