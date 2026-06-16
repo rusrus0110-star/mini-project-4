@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 
 import { connect_database } from "./config/database.js";
 import auth_router from "./routes/auth_routes.js";
+import task_router from "./routes/task_routes.js";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", auth_router);
+app.use("/api/tasks", task_router);
 
 const start_server = async () => {
   try {
