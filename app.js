@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 
 import { connect_database } from "./config/database.js";
+import auth_router from "./routes/auth_routes.js";
 
 dotenv.config();
 
@@ -12,11 +13,13 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     message: "Task Manager API is running",
   });
 });
+
+app.use("/api/auth", auth_router);
 
 const start_server = async () => {
   try {
