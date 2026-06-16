@@ -1,6 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 
+import { connect_database } from "./config/database.js";
+
 dotenv.config();
 
 const app = express();
@@ -16,6 +18,18 @@ app.get("/", (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+const start_server = async () => {
+  try {
+    await connect_database();
+
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Application startup failed:", error.message);
+
+    process.exit(1);
+  }
+};
+
+start_server();
